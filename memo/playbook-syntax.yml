@@ -2,8 +2,8 @@
 - name: describe to what to do             # g该play执行内容简介
   hosts:                                   # 指定参与到该play的主机(列表): 
     - hostname                             # 主机名
-    - hostgoups                            # 主机组
-    - regexp                               # 正则表达式
+    - hostglob                             # 通配符
+    - ~regexp                              # 正则表达式
   remote_user: username                    # 连接远程主机使用的帐号
   sudo_user:   username                    # 使用'sudo'在远程执行命令时使用的帐号，默认为root
   sudo: yes|no
