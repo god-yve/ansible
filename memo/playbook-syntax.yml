@@ -1,0 +1,81 @@
+---                                        # 一个play的开始
+- name: describe to what to do             # g该play执行内容简介
+  hosts:                                   # 指定参与到该play的主机(列表): 
+    - hostname                             # 主机名
+    - hostgoups                            # 主机组
+    - regexp                               # 正则表达式
+  remote_user: username                    # 连接远程主机使用的帐号
+  sudo_user:   username                    # 使用'sudo'在远程执行命令时使用的帐号，默认为root
+  sudo: yes|no
+  gather_facts: yes|no                     # 指定是否在远程主机上使用setup模块收集主机信息
+  connection: ssh|local                    # 指定与远程服务器建立连接使用的方式
+  vars:                                    # 自定义变量及其值(字典):
+    var_name: value
+    var_name: value
+  vars_files:                              # 从外部文件读取自定义变量
+    /path/to/filename.yml
+    /path/to/filename.yml
+  vars_prompt:                             # 定义当执行playbook时要求用户手动输入值的变量，主要用于某些密码等敏感的不适合直接斜在文件中的内容
+    - name: 'var_name'                     # 指定变量名
+      prompt: "messages to display"        # 提示信息
+      privates: yes|no                     # 指定是否在屏幕上回显用户输入
+    - name: 'var_name'                     
+      prompt: "messages to display"        
+      privates: yes|no                     
+  pre_tasks: 
+    - name: describe what opeation to do   # 任务内容描述  
+      module: argument=value ...           # 定义完成任务调用的模块
+
+  tasks:                                   # 具体任务定义段
+    - name: describe what opeation to do   # 任务内容描述  
+      module: argument=value ...           # 定义完成任务调用的模块
+      when: python_express                 # 定义任务执行条件，如果python表达式的结果为真就执行该任务，否则就不执行
+      async: seconds                       # 异步执行任务, 并设置超时，如果值为0，则不设置超时
+      poll:  seconds                       # 设置定期查询任务执行状态时间，单位秒
+      ignore_errs: yes|no                  # 是否忽略模块返回的错误信息
+      notify: handlers name                # 定义事件处理通知
+
+
+    - name: Install Required Packages      # 循环及条件使用示例
+      yum: name={{ item }}  state=present  # 在模块参数中通过变量 {{ item }} 引用具体值
+      with_items: 
+        - gcc
+        - gcc-c++
+        - cpp
+        - autoconf
+        - automake
+      when: ansible_os_family == "RedHat"  # 当系统为RedHat系的发行版时才执行, 注意引用变量时不需要使用双引号限定变量名
+
+    - name: Install Required Packages      # 循环及条件使用示例
+      apt: name={{ item }}  state=present  # 在模块参数中通过变量 {{ item }} 引用具体值
+      with_items: 
+        - gcc
+        - gcc-c++
+        - cpp
+        - autoconf
+        - automake
+      when: ansible_os_family == "Debian"  # 当系统为Debian系的发行版时才执行, 注意引用变量时不需要使用双引号限定变量名
+
+    - name: Backup Database                # 备份数据库可能需要很长时间，因此使用异步方式。
+      command: mysqldadmin --all-database -urooot -ppassword >full-backup.sql
+      async: 0                             # 将超时设为0
+      poll: 60                             # 设置每60秒查询一次任务状态
+
+
+   
+  handlers:
+    - name: service name                   # 定义事件处理名称，tasks段中的任务通过该名字调用事件处理
+      module: argument=value ...           # 定义完成任务调用的模块
+
+    - name: service name                   # 定义事件处理名称，tasks段中的任务通过该名字调用事件处理
+      module: argument=value ...           # 定义完成任务调用的模块
+ 
+
+
+
+
+
+
+
+循环: 
+
