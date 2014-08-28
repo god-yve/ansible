@@ -9,6 +9,7 @@
   sudo: yes|no
   gather_facts: yes|no                     # 指定是否在远程主机上使用setup模块收集主机信息
   connection: ssh|local                    # 指定与远程服务器建立连接使用的方式
+  remote_port: 22                          # 指定默认使用的连接端口
   vars:                                    # 自定义变量及其值(字典):
     var_name: value
     var_name: value
