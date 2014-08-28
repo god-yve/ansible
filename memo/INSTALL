@@ -1,0 +1,66 @@
+RHEL/Centos 6下的安装
+  ansible支持三种安装方式: 
+  * 操作系统的包管理工具
+  * python的包管理工具PIP
+  * 使用源代码安装 
+
+
+  * 操作系统的包管理工具安装
+    由于RHEL官方的Yum源中没有收录ansible， 因此需要通过添加第三方的Yum来安装ansible。 
+    此处使用由Fedora维护的EPEL源。
+    此方法的有点在于由包管理工具自动解决软件包之间的依赖关系。 缺点则在于通常Yum源中的
+    软件版本会比软件当前实际最新版本低几个版本。 
+
+    1. 先去Fedora上下载最新的仓库安装包
+       RHEL 6 安装包: http://mirrors.hust.edu.cn/epel/6/i386/repoview/epel-release.html
+       RHEP 7 安装包: http://mirrors.hustunique.com/epel/beta/7/x86_64/repoview/epel-release.html
+   
+    2. 使用yum安装
+       sudo yum install ansible
+
+    3. 验证安装
+       ansible --version
+
+
+
+  * python的包管理工具PIP
+    由于ansible是一个使用python编写的软件其依赖的也都是python的库文件，因此可以直接使用python的
+    包管理工具pip来安装。pip可以查找，安装，跟新系统中的python软件或库, 并在安装时自动为你解决包
+    之间的依赖关系，每次ansible发布新版本后就会把新版本同步到pip仓库, 因此可以保证使用这种方式获
+    得的软件总是最新的。 
+
+    由于RHEL中默认没有安装pip需要手动自己安装, 有两中方式安装pip，一种是先安装python-setuptools后
+    在使用'easy_install'来安装最新版本的pip， 还有一种是直接安装系统自带的python-pip, 但系统自带
+    的pip的版本较低。 
+
+    1. 安装pip
+       sudo yum install python-pip
+       或者
+       sudo yum install python-setuptools 
+       sudo easy_install pip
+       
+    2. 使用pip安装ansible
+       sudo pip install ansible
+
+
+    3. 验证安装
+       ansible --version
+
+
+
+  * 使用源代码安装 
+    ansible跟新速度较快如果想要体验最新加入的一些功能，或者想要在最新的版本中测试自己编写的一些
+    模块是否兼容, 则可以通过源代码安装的方式和开发进度保持一致。 
+
+    1. 从github上克隆ansible仓库
+       git clone https://github.com/ansible/ansible
+   
+    2. 安装ansible
+       cd ansible
+       sudo make install
+
+
+
+
+注意: 
+    如果被控制中的操作系统使用了SELinux, 则在被控机上除了需要安装python之外还需要安装libselinux-python。
