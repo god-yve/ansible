@@ -1,0 +1,88 @@
+---
+- name: Install Nginx 1.7 
+  hosts:
+     - localhost
+  remote_user:  yan
+  sudo: yes
+  
+  tasks:
+    - name: Get EPEL Yum Repo For RHEL/Centos 6
+      copy: src=/home/yan/software/epel-release-6-8.noarch.rpm 
+            dest=/opt/epel.noarch.rpm   
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
+
+    - name: Get EPEL Yum Repo For RHEL/Centos 7
+      copy: src=/home/yan/software/epel-release-7-0.2.noarch.rpm 
+            dest=/opt/epel.noarch.rpm   
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
+
+    - name: Install EPEL Yum Repo For RHEL/Centos
+      command: /usr/bin/yum install epel.noarch.rpm 
+               chdir=/opt
+      ignore_errors: yes
+    
+    - name: Install Development Tools
+      yum: name={{ item }}  state=present
+      with_items:
+        - gcc
+        - gcc-c++
+        - cpp
+        - autoconf
+        - automake
+        - gettext
+        - patch
+
+    - name: Install Required Libraries 
+      yum: name={{ item }}  state=present
+      with_items:
+        - pcre-devel
+        - zlib-devel
+        - gd-devel
+        - openssl-devel
+        - libxslt-devel
+        - GeoIP-devel
+
+
+    - name: Create User nginx
+      user: name=nginx  
+            state=present
+            home=/opt/nginx
+            shell=/bin/false
+            createhome=no
+
+    - name: Create User nginx
+      group: name=nginx  
+             state=present
+    
+
+    - name: Create Directory For Compling Source Code
+      file: path=/usr/src/yan
+            state=directory
+            owner=yan
+            group=yan
+
+    - name: Copy Nginx Source Code
+      copy: src=/home/yan/software/nginx-1.7.4.tar.gz
+            dest=/usr/src/yan
+
+    - name: Untar Source Code
+      command: /bin/tar xzvf  nginx-1.7.4.tar.gz
+               chdir=/usr/src/yan
+               creates=/opt/nginx-1.7.4
+
+    - name: Configure Source Code
+      command: ./configure --prefix=/opt/nginx  --user=nginx  --group=nginx  --with-http_ssl_module  
+               chdir=/usr/src/yan/nginx-1.7.4
+
+    - name: Compiling Source Code
+      command: make -j2
+               chdir=/usr/src/yan/nginx-1.7.4
+
+    - name: Installing nginx
+      command: make install
+               chdir=/usr/src/yan/nginx-1.7.4
+
+
+# 待完善的地方
+# 服务启动脚本
+# 服务配置文件管理

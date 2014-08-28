@@ -1,0 +1,138 @@
+---
+- name: Install Nagios 4 
+  hosts: nagios
+  remote_user: yan
+  sudo: yes
+  vars:
+    nagios_user: nagios
+    nagios_group: nagios
+    nagios_command_group: nagioscmd
+    nagios_base_dir: /opt/nagios
+    nagios_sysconf_dir: /etc/nagios
+    nagios_local_state_dir: /var/nagios
+
+
+  tasks:
+  - name: Install Required Packages(APACHE, PHP, LIBS) for Nagios
+    yum: name={{item}}
+    with_items:
+      - "@Development\\ tools"
+      - gd
+      - gd-devel
+      - libjpeg-turbo
+      - libjpeg-turbo-devel
+      - libpng
+      - libpng-devel
+      - net-snmp
+      - net-snmp-utils
+      - net-snmp-perl
+      - openssl
+      - openssl-devel
+      - zlib
+      - zlib-devel
+      - httpd
+      - httpd-tools
+      - httpd-devel
+      - php
+      - php-common
+      - php-cli
+      - php-snmp
+      - php-mysql
+      - php-pdo
+      - rrdtool
+      - rrdtool-php
+      - mysql-devel
+      - postgresql-devel
+
+
+  - name: Create Software Directory 
+    file: path=/opt/software state=directory
+
+  - name: Copy Nagios Core Source Code Tarball
+    copy: src=/home/yan/software/nagios-4.0.8.tar.gz  dest=/opt/software
+
+  - name: Copy Nagios Plugin Source Code TArball
+    copy: src=/home/yan/software/nagios-plugins-2.0.3.tar.gz  dest=/opt/software
+
+  - name: Create Nagios Command Group
+    group: name={{nagios_command_group}}
+
+  - name: Create User For Nagios Service
+    user: name={{nagios_user}} groups={{nagios_command_group}}
+
+  - name: Create Nagios Configuration File Directory
+    file: path={{nagios_sysconf_dir}}  state=directory  owner={{nagios_user}} group={{nagios_user}}
+
+  - name: Create Nagios State File Directory
+    file: path={{nagios_local_state_dir}}  state=directory owner={{nagios_user}}  group={{nagios_user}}
+
+  - name: Extract Nagios Core Source Code 
+    command: /bin/tar xzvf /opt/software/nagios-4.0.8.tar.gz  
+    args:
+      chdir: /opt/software
+      creates: nagios-4.0.8
+
+  - name: Configuration Nagios Core Source Code
+    command: ./configure --prefix={{nagios_base_dir}} --sysconfdir={{nagios_sysconf_dir}} --localstatedir={{nagios_local_state_dir}}   --with-nagios-user={{nagios_user}} --with-nagios-group={{nagios_user}} --with-command-group={{nagios_command_group}}
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Compiling Nagios Core 
+    command: make all
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Installing Nagios Core Binarys
+    command: make install 
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Installing Nagios Core Startup Script
+    command: make install-init 
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Installing Nagios Core Command File
+    command: make install-commandmode
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Installing Nagios Core Config File
+    command: make install-config
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Installing Nagios Core Apache Http Web Config File
+    command: make install-webconf
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Installing Nagios Core Web Interface File
+    command: make install-exfoliation
+    args: 
+      chdir: /opt/software/nagios-4.0.8
+
+  - name: Extract Nagios Plugin Source Code 
+    command: /bin/tar xzvf /opt/software/nagios-plugins-2.0.3.tar.gz 
+    args:
+      chdir: /opt/software
+      creates: nagios-plugins-2.0.3
+
+  - name: Coniguration Nagios Plugin Source Code
+    command: ./configure --prefix={{nagios_base_dir}}  --with-nagios-user={{nagios_user}}  --with-nagios-group={{nagios_user}}
+    args:
+      chdir: /opt/software/nagios-plugins-2.0.3
+    
+  - name: Compiling Nagios Plugin 
+    command: make
+    args:
+      chdir: /opt/software/nagios-plugins-2.0.3
+
+  - name: Installing Nagios Plugin 
+    command: make install
+    args:
+      chdir: /opt/software/nagios-plugins-2.0.3
+    
+
+  
+ 

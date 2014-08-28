@@ -1,0 +1,62 @@
+---
+- name: Install Mysql From Source Code
+  hosts:
+    - 127.0.0.1
+  remote_user: yan
+  sudo: yes
+  connection: local
+  vars:
+     
+  tasks:
+    - name: Install Development Tools
+      yum: name={{ item }}   state=present
+      with_items:
+        - gcc
+        - gcc-c++
+        - make
+        - autoconf
+        - cmake
+        
+    - name: Install necessary libraries for compiling
+      yum: name={{ item }}  state=present
+      with_items:
+        - zlib-devel
+        - ncurses-devel
+        - openssl-devel
+
+    - name: Create directory for Compliing MySQL
+      command: /bin/mkdir /usr/src/yan
+               creates=/usr/src/yan
+
+    - name: Setting Porper Modes
+      file: path=/usr/src/yan
+            state=directory
+            owner=yan
+            group=yan
+
+    - name: Copy Google Mock(gmock)
+      copy: src=/home/yan/software/gmock-1.6.0.zip
+            dest=/usr/src/yan
+
+    - name: Copy MySQL Source Code
+      copy: src=/home/yan/software/mysql-5.6.20.tar.gz
+            dest=/usr/src/yan
+
+    - name: Untar Source Code
+      command: /bin/tar xzvf  mysql-5.6.20.tar.gz -C /usr/src/yan
+               chdir=/opt
+               creates=/usr/src/yan/mysql-5.6.20
+
+    - name: Configuration Source Code
+      command: /usr/bin/cmake .  -DCMAKE_INSTALL_PREFIX=/opt/mysql -DSYSCONFDIR=/opt/mysql/data  -DMYSQL_DATADIR=/opt/mysql/data  -DMYSQL_UNIX_ADDR=/opt/mysql/data/mysql.sock  -DWITH_INNOBASE_STORAGE_ENGINE=1  -DWITH_PARTITION_STORAGE_ENGINE=1  -DWITH_ARCHIVE_STORAGE_ENGINE=1  -DWITH_BLACKHOLE_STORAGE_ENGINE=1  -DWITH_FEDERATED_STORAGE_ENGINE=1  -DWITH_PERFSCHEMA_STORAGE_ENGINE=1  -DENABLED_LOCAL_INFILE=1  -DMYSQL_TCP_PORT=3306  -DWITH_EXTRA_CHARSETS=all  -DWITH_DEBUG=0  -DENABLE_DEBUG_SYNC=0  -DWITH_SSL=bundled  -DWITH_ZLIB=bundled  -DWITH_READLINE=1  -DZLIB_INCLUDE_DIR=/usr  -DWITH_READLINE=1  -DWITH_GMOCK=/usr/src/yan/gmock-1.6.0.zip
+               chdir=/usr/src/yan/mysql-5.6.20
+
+    - name: Compliing Source Code
+      command: make -j2
+               chdir=/usr/src/yan/mysql-5.6.20
+
+    - name: Installing MySQL 
+      command: make install
+               chdir=/usr/src/yan/mysql-5.6.20
+
+
