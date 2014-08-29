@@ -1,15 +1,15 @@
----                                        # 一个play的开始
-- name: describe to what to do             # g该play执行内容简介
+---                                        # playa开始标记, 一个play就是一个列表, 一个playbook可以包含多个play
+- name: describe to what to do             # 该play作用描述
   hosts:                                   # 指定参与到该play的主机(列表): 
     - hostname                             # 主机名
     - hostglob                             # 通配符
     - ~regexp                              # 正则表达式
   remote_user: username                    # 连接远程主机使用的帐号
   sudo_user:   username                    # 使用'sudo'在远程执行命令时使用的帐号，默认为root
-  sudo: yes|no
-  gather_facts: yes|no                     # 指定是否在远程主机上使用setup模块收集主机信息
+  sudo: yes|no                             # 设置在远程主机上是否使用'sudo'执行任务
   connection: ssh|local                    # 指定与远程服务器建立连接使用的方式
   remote_port: 22                          # 指定默认使用的连接端口
+  gather_facts: yes|no                     # 指定是否在远程主机上使用setup模块收集主机信息
   vars:                                    # 自定义变量及其值(字典):
     var_name: value
     var_name: value
@@ -17,12 +17,12 @@
     /path/to/filename.yml
     /path/to/filename.yml
   vars_prompt:                             # 定义当执行playbook时要求用户手动输入值的变量，主要用于某些密码等敏感的不适合直接斜在文件中的内容
-    - name: 'var_name'                     # 指定变量名
+    - name: 'var_name'                     # 指定变量名, 可以在文件中使用{{ var_name }}的方式引用该变量值
       prompt: "messages to display"        # 提示信息
       privates: yes|no                     # 指定是否在屏幕上回显用户输入
-    - name: 'var_name'                     
-      prompt: "messages to display"        
-      privates: yes|no                     
+    - name: 'https_passphrase'             # 例如: 在执行时才输入HTTPS证书密码                     
+      prompt: "key passphrase"        
+      privates: yes                        # 输入的内容不在屏幕上显示
   pre_tasks: 
     - name: describe what opeation to do   # 任务内容描述  
       module: argument=value ...           # 定义完成任务调用的模块
@@ -31,11 +31,22 @@
     - name: describe what opeation to do   # 任务内容描述  
       module: argument=value ...           # 定义完成任务调用的模块
       when: python_express                 # 定义任务执行条件，如果python表达式的结果为真就执行该任务，否则就不执行
-      async: seconds                       # 异步执行任务, 并设置超时，如果值为0，则不设置超时
+      async: seconds                       # 异步执行任务一次在所有被控机上执行任务, 并设置超时，如果值为0，则没有超时，ansible会一直等待直到任务执行完
       poll:  seconds                       # 设置定期查询任务执行状态时间，单位秒
       ignore_errs: yes|no                  # 是否忽略模块返回的错误信息
-      notify: handlers name                # 定义事件处理通知
+      delegate_to:                         # 在指定的主机上执行该任务，而不是在当前参与到play的主机
+      local_action: module argument=value ...  # 在本机上执行该任务, 相当于: delegate_to: localhost
+      notify:                              # 发送事件处理通知
+        - handler name                     # 指定调用的事件
+        - handler name
 
+    - name: Remove Updating Server IP From Nginx              # 在升级一组web应用服务器前, 
+      template: src=nginx.conf.j2 dest /opt/nginx/conf        # 需要先从代理服务器上将准备升级的服务器从代理中去掉
+      delegate_to: nginx-server                               # 因此使用delegate_to修改代理的配置文件
+
+    - name: Restart Nginx                                     # 再使用delegate_to重启代理服务
+      service: name=nginx  state=restarted                    # 使配置生效后， 开始升级应用
+      delegate_to: nginx-server                               # 
 
     - name: Install Required Packages      # 循环及条件使用示例
       yum: name={{ item }}  state=present  # 在模块参数中通过变量 {{ item }} 引用具体值
@@ -45,16 +56,13 @@
         - cpp
         - autoconf
         - automake
-      when: ansible_os_family == "RedHat"  # 当系统为RedHat系的发行版时才执行, 注意引用变量时不需要使用双引号限定变量名
+      when: ansible_os_family == "RedHat"           # 当系统为RedHat系的发行版时才执行, 注意引用变量时不需要使用双引号限定变量名
 
-    - name: Install Required Packages      # 循环及条件使用示例
-      apt: name={{ item }}  state=present  # 在模块参数中通过变量 {{ item }} 引用具体值
-      with_items: 
-        - gcc
-        - gcc-c++
-        - cpp
-        - autoconf
-        - automake
+    - name: Install Required Packages               # 使用通配符的循环, 在运行时动态取得信息 
+      copy: name={{ item }}  dest=/home/yan/.ssh    # 在模块参数中通过变量 {{ item }} 引用具体值
+      with_fileglob:                                # 
+        - /opt/key/*.pub                            # 
+
       when: ansible_os_family == "Debian"  # 当系统为Debian系的发行版时才执行, 注意引用变量时不需要使用双引号限定变量名
 
     - name: Backup Database                # 备份数据库可能需要很长时间，因此使用异步方式。
