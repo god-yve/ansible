@@ -71,4 +71,5 @@ RHEL/Centos 6下的安装
 
 
 其它: 
+    管理服务器上的Python版本需要大于等于2.6, 被管理端服务器上的python需要2.4以上, 如果是2.4则需要安装python-simplejson库。 
     如果被控制中的操作系统使用了SELinux, 则在被控机上除了需要安装python之外还需要安装libselinux-python。
