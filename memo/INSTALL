@@ -52,6 +52,8 @@ RHEL/Centos 6下的安装
     3. 验证安装
        ansible --version
 
+    注意: 使用pip安装时可能需要安装开发工具(gcc, make, autoconf等)以及各类库的头文件(如python-devel等).
+    
 
   * 使用源代码安装ansible 
     ansible跟新速度较快如果想要体验最新加入的一些功能，或者想要在最新的版本中测试自己编写的一些
