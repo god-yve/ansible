@@ -15,8 +15,8 @@ RHEL/Centos 6下的安装
        RHEL 6 安装包地址: 
        http://mirrors.hust.edu.cn/epel/6/i386/repoview/epel-release.html
       
-       RHEP 7 安装包地址: 
-       http://mirrors.hustunique.com/epel/beta/7/x86_64/repoview/epel-release.html
+       RHEL 7 安装包地址: 
+       http://mirrors.hustunique.com/epel/7/x86_64/repoview/epel-release.html
    
     2. 安装EPEL源
        sudo yum install epel-release-7-2.noarch
