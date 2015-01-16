@@ -6,6 +6,7 @@ RHEL/Centos 6下的安装
 
 
   * 操作系统的包管理工具安装
+    RHEL/Centos 
     由于RHEL官方的Yum源中没有收录ansible， 因此需要通过添加第三方的Yum来安装ansible。 
     此处使用由Fedora维护的EPEL源。
     此方法的优点在于由系统自带的包管理工具会自动解决软件包之间的依赖关系。 缺点则在于通常Yum源中收录的
@@ -26,8 +27,20 @@ RHEL/Centos 6下的安装
 
     4. 验证安装
        ansible --version
-
-
+ 
+    Ubuntu/Debian
+        由于Ubuntu官方源中自带的ansible版本比较低因此推荐安装PPA获得最新的ansible.
+        
+    1. 安装Ansible PPA
+       apt-get install software-properties-common
+       apt-add-repository ppa:ansible/ansible
+  
+    2. 安装ansible
+       apt-get update
+       apt-get install ansible
+       
+    3. 验证安装
+       ansible --version
 
   * 使用python的包管理工具PIP来安装ansible
     由于ansible是一个使用python编写的软件其依赖的也都是python的库文件，因此可以直接使用python的
