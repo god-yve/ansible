@@ -1,3 +1,24 @@
+
+主控机(Controller):
+ * Python >= 2.6
+ 
+被控机():
+ * Python >= 2.4
+ 注意: 
+     1. 如果是Python2.5以下的版本则需要另外安装python-simplejson模块。 
+     2. 如果被控制中的操作系统使用了SELinux, 则还需要安装libselinux-python模块。
+     3. 对于有些(gentoo, arch)默认系统中只安装了python3.x的系统，则必须要安装python2.x才能正常使用ansible，
+        且在这些系统中必须要在清单文件(inventory)中设置变量'ansible_python_interprete'以指向python2.x解释器。
+        
+        
+        
+Ansible依赖的Python模块:
+  python-crypto
+  paramiko
+  PyYAML
+  Jinja
+  python-markupsafe
+
 RHEL/Centos 6下的安装
   ansible支持三种安装方式: 
   * 操作系统的包管理工具
@@ -84,5 +105,4 @@ RHEL/Centos 6下的安装
 
 
 其它: 
-    管理服务器上的Python版本需要大于等于2.6, 被管理端服务器上的python需要2.4以上, 如果是2.4则需要安装python-simplejson库。 
-    如果被控制中的操作系统使用了SELinux, 则在被控机上除了需要安装python之外还需要安装libselinux-python。
+    
