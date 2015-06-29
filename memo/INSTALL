@@ -1,8 +1,8 @@
 
-主控机(Controller):
+主控机(Controller machine):
  * Python >= 2.6
  
-被控机():
+被控机(Managed machine):
  * Python >= 2.4
  注意: 
      1. 如果是Python2.5以下的版本则需要另外安装python-simplejson模块。 
