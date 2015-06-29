@@ -13,10 +13,10 @@
         
         
 Ansible依赖的Python模块:
-  python-crypto
-  paramiko
-  PyYAML
-  Jinja
+  python-crypto, 加密算法库
+  paramiko, SSH协议python实现
+  PyYAML, yaml解析库
+  Jinja, python模板库
   python-markupsafe
 
 RHEL/Centos 6下的安装
