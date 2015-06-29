@@ -1,0 +1,27 @@
+                           ansible-doc -- 查看ansible模块使用说明
+
+用法:
+    ansible-doc [options] [module...]
+
+
+概述: 
+    查看ansible模块帮助文档。 
+    除非使用选项'-s', 默认程序会打印详细的模块使用帮助。
+
+
+选项:
+  -v, --version             
+    打印程序版本信息及模块搜索目录后退出。 
+
+  -h, --help            
+    打印程序使用帮助信息后退出。
+
+  -M MODULE_PATH, --module-path=MODULE_PATH
+   指定ansible模块所在目录。 
+
+  -l, --list            
+    打印出系统中已安装的模块列表。 
+
+  -s, --snippet         
+    打印模块的简要信息。  
+   
