@@ -1,0 +1,102 @@
+                                ansible -- 命令行即时执行工具
+
+用法: 
+    ansible [选项] <主机列表>  [-m 模块  [-a 模块参数]]
+
+
+
+概述: 
+    
+
+
+
+选项:
+  -i /path-to-inventory-file,  --inventory-file=/path-to-inventory-file
+    指定ansible使用的清单文件, 默认使用'/etc/ansible/hosts'。
+
+  --list-hosts          
+    打印被选中的主机, 不执行其它任何操作。 
+    使用此选项可以确认会有哪些主机将会执行操作。 
+
+  -l SUBSET, --limit=SUBSET
+    在选中的主机中在进行进一步的筛选。 
+ 
+  -c CONNECTION,  --connection=CONNECTION
+    指定连接方式, SSH,paramiko或smart。 
+    默认为smart由ansible自行决定选用最优的连接方式。 
+                        
+  -T TIMEOUT,  --timeout=TIMEOUT
+    指定连接超时, 默认为10秒。 
+             
+  -u REMOTE_USER,  --user=REMOTE_USER
+    指定连接到远程服务器时使用的账号。
+
+  -U SUDO_USER,  --sudo-user=SUDO_USER
+    指定使用'sudo'执行命令时使用的账号, 默认使用root。 
+
+  -s, --sudo
+    在受控机上使用'sudo'执行命令。
+
+  -k,   --ask-pass        
+    使用密码认证方式连接到远程服务器。 
+
+  -K,  --ask-sudo-pass   
+    输入用户的'sudo'密码。
+    如果在受控机上使用'sudo'执行命令时则需要提前输入密码。 
+
+  --private-key=/path-to-private-key-file
+    指定SSH公钥认证时使用的私钥文件。 
+
+  -S, --su
+    在远程服务器上使用'su'执行命令。 
+    
+  -R SU_USER
+  --su-user=SU_USER
+    指定使用'su'执行命令时使用的账号, 默认使用root。 
+
+  --ask-su-pass         
+    输入'su'的密码, 如果执行'su'时需要提供密码则使用该选项。 
+
+  --ask-vault-pass      
+    ask for vault password
+
+  -C, --check           
+    don't make any changes; instead, try to predict some of the changes that may occur
+
+  -f FORKS,  --forks=FORKS
+    并发执行的数量, 默认使用5个进程同时执行。 
+    
+  -B SECONDS,  --background=SECONDS
+    设置异步执行命令时的超时时间, 默认没有限制。
+
+  -P POLL_INTERVAL,  --poll=POLL_INTERVAL
+    指定异步执行命令时查询命令执行状态的时间间隔, 默认每15秒。
+
+  -M MODULE_PATH,  --module-path=MODULE_PATH
+    指定ansible模块的查找位置, 默认将在目录'/usr/share/ansible'下查找模块。 
+    同时可以通过环境变量"ANSIBLE_LIBRARY"指定ansible模块位置。 
+
+  -m MODULE_NAME,  --module-name=MODULE_NAME
+    指定使用的模块, 如果没有指定则默认使用command模块。
+
+  -a MODULE_ARGS,  --args=MODULE_ARGS
+    指定模块参数, 参数使用"key=value"的形式多个参数使用(单)双引号围住且各个参数之间使用空格隔开. 
+    例如: -m copy -a "src=/etc/motd  dest=/tmp"
+
+  -o, --one-line       
+    尽量将执行结果打印在一行上。 
+
+  -t /path-to-dir,  --tree=/path-to-dir
+    将放回的结果以主机名作为文件名保存到指定目录下。 
+
+  --vault-password-file=VAULT_PASSWORD_FILE
+                        vault password file
+
+  -v, --verbose         
+    执行时打印详细的执行信息。 
+                       
+  -h 
+  --help   
+
+  --version       
+
