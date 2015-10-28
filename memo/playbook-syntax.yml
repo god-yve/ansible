@@ -71,6 +71,9 @@
       poll: 60                             # 设置每60秒查询一次任务状态
 
 
+  post_tasks:
+    - name: task to exec
+      module: arguments 
    
   handlers:
     - name: service name                   # 定义事件处理名称，tasks段中的任务通过该名字调用事件处理
