@@ -8,7 +8,6 @@
   sudo_user:   username                    # 使用'sudo'在远程执行命令时使用的帐号，默认为root
   sudo: yes|no                             # 设置在远程主机上是否使用'sudo'执行任务
   connection: ssh|paramiko|local           # 指定与远程服务器建立连接使用的方式
-  remote_port: 22                          # 指定默认使用的连接端口
   gather_facts: yes|no                     # 指定是否在远程主机上使用setup模块收集主机信息
   vars:                                    # 自定义变量及其值(字典):
     var_name: value
