@@ -11,6 +11,12 @@
 
 
 选项:
+  -a 'ARGUMENTS', --args='ARGUMENTS'
+    指定模块使用的参数。
+    
+  -b, --become
+    使用权限提升来执行模块。 
+    
   -i /path-to-inventory-file,  --inventory-file=/path-to-inventory-file
     指定ansible使用的清单文件, 默认使用'/etc/ansible/hosts'。
 
