@@ -5,8 +5,8 @@
     - hostglob                             # 通配符
     - ~regexp                              # 正则表达式
   remote_user: username                    # 连接远程主机使用的帐号
-  sudo_user:   username                    # 使用'sudo'在远程执行命令时使用的帐号，默认为root
-  sudo: yes|no                             # 设置在远程主机上是否使用'sudo'执行任务
+  become:  yes|no                          # 是否使用sudo改变用户身份   
+  become_user:   username                  # 使用'sudo'在远程执行命令时使用的帐号，默认为root
   connection: ssh|paramiko|local           # 指定与远程服务器建立连接使用的方式
   gather_facts: yes|no                     # 指定是否在远程主机上使用setup模块收集主机信息
   vars:                                    # 自定义变量及其值(字典):
