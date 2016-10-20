@@ -21,7 +21,7 @@ Ansible依赖的Python模块:
 
 RHEL/Centos 6下的安装
   ansible支持三种安装方式: 
-  * 操作系统的包管理工具
+  * 操作系统自带的包管理工具
   * python的包管理工具PIP
   * 使用源代码安装 
 
