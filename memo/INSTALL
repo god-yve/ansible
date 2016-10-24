@@ -24,6 +24,12 @@ Ansible依赖的Python模块:
   Jinja, python模板库
   python-markupsafe
 
+
+MAC os安装ansible
+  mac上最好通过python pip安装最新版本的ansible。 
+  
+  
+  
 RHEL/Centos 6下的安装
   ansible支持三种安装方式: 
   * 操作系统自带的包管理工具
