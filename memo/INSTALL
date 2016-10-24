@@ -113,6 +113,12 @@ RHEL/Centos 6下的安装
        
        # Fish
        $. ./hacking/env-setup.fish
+       
+    3. 同步到最新版本
+       # 更新ansible时, 不止要更新ansible代码
+       # 还要同步更新标准模块的代码
+       $ git pull --rebase
+       $ git submodule update --init --recursive
 
     注意: 使用该方式安装ansible时需要自己手动安装ansible依赖的python库。 
 
