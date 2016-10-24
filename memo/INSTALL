@@ -94,16 +94,25 @@ RHEL/Centos 6下的安装
     注意: 使用pip安装时可能需要安装开发工具(gcc, make, autoconf等)以及各类库的头文件(如python-devel等).
     
 
-  * 使用源代码安装ansible 
+  * 使用源代码安装ansible进行测试
     ansible跟新速度较快如果想要体验最新加入的一些功能，或者想要在最新的版本中测试自己编写的一些
     模块是否兼容, 则可以通过源代码安装的方式和开发进度保持一致。 
     
     1. 从github上克隆ansible仓库
        git clone https://github.com/ansible/ansible
+       cd ansible 
+       # ansible将标准模块独立出来进行维护
+       # 因此需要将标准模块克隆到本地
+       git submodule update --init lib/ansible/modules/core
+       git submodule update --init lib/ansible/modules/extras
    
-    2. 安装ansible
+    2. 运行ansible
        cd ansible
-       sudo make install
+       # BASH 
+       $source ./hacking/env-setup
+       
+       # Fish
+       $. ./hacking/env-setup.fish
 
     注意: 使用该方式安装ansible时需要自己手动安装ansible依赖的python库。 
 
