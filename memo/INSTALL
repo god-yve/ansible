@@ -2,7 +2,7 @@
 主控机(Controller machine):
  * Python >= 2.6
  
-被控机(Managed machine):
+托管主机(Managed machine):
  * Python >= 2.4
  * ssh(*Nix)
  * win_rm(windows)
