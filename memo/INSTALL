@@ -4,12 +4,17 @@
  
 被控机(Managed machine):
  * Python >= 2.4
+ * ssh(*Nix)
+ * win_rm(windows)
+ 
  注意: 
      1. 如果是Python2.5以下的版本则需要另外安装python-simplejson模块。 
      2. 如果被控制中的操作系统使用了SELinux, 则还需要安装libselinux-python模块。
      3. 对于有些(gentoo, arch)默认系统中只安装了python3.x的系统，则必须要安装python2.x才能正常使用ansible，
         且在这些系统中必须要在清单文件(inventory)中设置变量'ansible_python_interprete'以指向python2.x解释器。
-        
+         
+     4. 对于*nix系统, 默认使用sftp传输文件, 如果sftp不可用则可以在ansible.cfg 配置文件中配置成 scp 的方式。
+     
         
         
 Ansible依赖的Python模块:
