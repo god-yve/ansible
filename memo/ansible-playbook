@@ -1,0 +1,29 @@
+
+
+选项:
+  --flush-cache
+  
+  --force-handlers
+    强制执行handler, 即使是任务执行失败。 
+    
+  --list-tasks
+    打印playbook中所有将被执行的任务。 
+   
+   --list-tags
+    打印playbook中所有定义的标签。 
+    
+  --skip-tags=TAGS
+    设置在执行play时跳过具有指定标签的任务的执行。 
+  
+  -t TAGS, --tags=TAGS
+    只执行playbook中具有指定标签的任务。 
+    
+  --start-at-task=START_AT_TASK
+    从指定任务开始执行playbook。
+    主要用于当遇到错误后重新执行时跳过之前已经成功执行的任务。 
+    
+  --step
+    单步执行, 每次执行一个任务前都需要确认。 
+    
+    
+ 
