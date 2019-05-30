@@ -107,14 +107,10 @@ RHEL/Centos 6下的安装
     1. 从github上克隆ansible仓库
        git clone https://github.com/ansible/ansible
        cd ansible 
-       # ansible将标准模块独立出来进行维护
-       # 因此需要将标准模块克隆到本地
-       git submodule update --init lib/ansible/modules/core
-       git submodule update --init lib/ansible/modules/extras
    
-    2. 运行ansible
+    2. 将ansible添加到系统搜索路径
        cd ansible
-       # BASH 
+       # BASH
        $source ./hacking/env-setup
        
        # Fish
