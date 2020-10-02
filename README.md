@@ -1,3 +1,3 @@
 ansible
 =======
- ansible学些笔记
+ ansible学习笔记
